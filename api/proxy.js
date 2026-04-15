@@ -6,23 +6,22 @@ export default async function handler(req, res) {
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
-        "User-Agent": req.headers["user-agent"] || "",
-        "Content-Type": req.headers["content-type"] || ""
+        ...req.headers,
+        host: "meow-web-hrgz.onrender.com"
       }
     });
 
     let body = await response.text();
 
-    // Fix link asset để không lộ Render
-    body = body.replaceAll(
-      "https://meow-web-hrgz.onrender.com",
-      "https://your-domain.vercel.app"
-    );
+    // FIX TOÀN BỘ LINK RELATIVE → ABSOLUTE
+    body = body
+      .replaceAll('href="/', `href="${base}/`)
+      .replaceAll('src="/', `src="${base}/`)
+      .replaceAll("url(/", `url(${base}/`);
 
-    res.status(response.status);
-    res.send(body);
+    res.status(response.status).send(body);
 
   } catch (err) {
-    res.status(500).send("Proxy error: " + err.toString());
+    res.status(500).send("Proxy error");
   }
 }
