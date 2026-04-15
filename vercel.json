@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "src": "^/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|map))$",
+      "dest": "https://meow-web-hrgz.onrender.com/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/proxy"
     }
